@@ -17274,8 +17274,8 @@ display: inline-block;\
 text-align: center;\
 }\
 .ace_emoji {\
-font-size: .5rem;\
-transform: translateX(-.125rem);\
+font-size: 50%;\
+transform: translate(-.12.5%, -.12.5%);\
 }\
 .ace_cursor-layer {\
 z-index: 4;\
