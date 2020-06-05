@@ -17209,7 +17209,7 @@ z-index: 1000;\
 opacity: 1;\
 }\
 .ace_composition_placeholder { color: transparent }\
-.ace_composition_marker { \
+.ace_composition_marker {\
 border-bottom: 1px solid;\
 position: absolute;\
 border-radius: 0;\
@@ -17265,7 +17265,7 @@ right: 0;\
 contain: strict;\
 will-change: transform;\
 }\
-.ace_hidpi .ace_text-layer > .ace_line, \
+.ace_hidpi .ace_text-layer > .ace_line,\
 .ace_hidpi .ace_text-layer > .ace_line_group {\
 contain: strict;\
 }\
@@ -17274,8 +17274,10 @@ display: inline-block;\
 text-align: center;\
 }\
 .ace_emoji {\
+display: inline-block;\
+text-align: center;\
 font-size: 50%;\
-transform: translate(-.12.5%, -.12.5%);\
+transform: translate(-12.5%, -12.5%);\
 }\
 .ace_cursor-layer {\
 z-index: 4;\
@@ -17415,7 +17417,7 @@ border: 1px solid transparent;\
 cursor: pointer;\
 }\
 .ace_folding-enabled .ace_fold-widget {\
-display: inline-block;   \
+display: inline-block;\
 }\
 .ace_fold-widget.ace_end {\
 background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==\");\
@@ -17535,7 +17537,8 @@ transform-origin: left;\
 white-space: pre;\
 opacity: 0.7;\
 margin: 0 10px;\
-}";
+}\
+";
 
 var useragent = require("./lib/useragent");
 var HIDE_TEXTAREA = useragent.isIE;
