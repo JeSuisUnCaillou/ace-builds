@@ -225,7 +225,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         if (keyword && this.indentKeywords.hasOwnProperty(keyword)) {
             if (this.indentKeywords[keyword] == -1)
                 return "";
-            if (keyword == "if" && !/then\s*$/i.test(line))
+            if (keyword == "if" && !/then\s*('|$)/i.test(line))
                 return "";
             return "start";
         }
@@ -276,7 +276,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             case "while":
             case "with":
                 var line = session.getLine(row);
-                var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                 if (singleLineCondition)
                     return;
                 var checkToken = new RegExp("^\\s*"+ modifiers + val, "i");
@@ -349,7 +349,7 @@ oop.inherits(FoldMode, BaseFoldMode);
                 case "while":
                 case "with":
                     var line = session.getLine(stream.getCurrentTokenRow());
-                    var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                    var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                     if (singleLineCondition) {
                         level = 0;
                         ignore = true;
@@ -530,7 +530,7 @@ oop.inherits(Mode, TextMode);
                             }
                             break;
                         case "if":
-                            var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                            var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                             if (!singleLineCondition)
                                 level += indentKeywords[val];
                             break;

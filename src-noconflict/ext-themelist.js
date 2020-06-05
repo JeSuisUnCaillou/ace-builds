@@ -1,4 +1,4 @@
-ace.define("ace/ext/themelist",["require","exports","module"], function(require, exports, module) {
+ace.define("ace/ext/themelist",[], function(require, exports, module) {
 "use strict";
 
 var themeData = [

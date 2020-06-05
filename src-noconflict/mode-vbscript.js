@@ -1,4 +1,4 @@
-ace.define("ace/mode/vbscript_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
+ace.define("ace/mode/vbscript_highlight_rules",[], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
@@ -175,7 +175,7 @@ oop.inherits(VBScriptHighlightRules, TextHighlightRules);
 exports.VBScriptHighlightRules = VBScriptHighlightRules;
 });
 
-ace.define("ace/mode/folding/vbscript",["require","exports","module","ace/lib/oop","ace/mode/folding/fold_mode","ace/range","ace/token_iterator"], function(require, exports, module) {
+ace.define("ace/mode/folding/vbscript",[], function(require, exports, module) {
 "use strict";
 
 var oop = require("../../lib/oop");
@@ -225,7 +225,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         if (keyword && this.indentKeywords.hasOwnProperty(keyword)) {
             if (this.indentKeywords[keyword] == -1)
                 return "";
-            if (keyword == "if" && !/then\s*$/i.test(line))
+            if (keyword == "if" && !/then\s*('|$)/i.test(line))
                 return "";
             return "start";
         }
@@ -276,7 +276,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             case "while":
             case "with":
                 var line = session.getLine(row);
-                var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                 if (singleLineCondition)
                     return;
                 var checkToken = new RegExp("^\\s*"+ modifiers + val, "i");
@@ -349,7 +349,7 @@ oop.inherits(FoldMode, BaseFoldMode);
                 case "while":
                 case "with":
                     var line = session.getLine(stream.getCurrentTokenRow());
-                    var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                    var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                     if (singleLineCondition) {
                         level = 0;
                         ignore = true;
@@ -475,7 +475,7 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-ace.define("ace/mode/vbscript",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/vbscript_highlight_rules","ace/mode/folding/vbscript","ace/range"], function(require, exports, module) {
+ace.define("ace/mode/vbscript",[], function(require, exports, module) {
 "use strict";
 
 var oop = require("../lib/oop");
@@ -530,7 +530,7 @@ oop.inherits(Mode, TextMode);
                             }
                             break;
                         case "if":
-                            var singleLineCondition = /^\s*(If)\s+(.)*\s+Then\s+(\S)+/i.test(line);
+                            var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                             if (!singleLineCondition)
                                 level += indentKeywords[val];
                             break;
