@@ -16166,8 +16166,15 @@ var Text = function(parentEl) {
             } else if (emoji) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
-                span.style.width = (self.config.characterWidth) + "px";
-                span.className = "ace_emoji";
+                var previousChar = value[m.index - 1];
+
+                if (previousChar === "\u200D") {
+                    span.style.width = (self.config.characterWidth * 2) + "px";
+                    span.className = "ace_cjk";
+                } else {
+                    span.style.width = (self.config.characterWidth) + "px";
+                    span.className = "ace_emoji";
+                }
                 span.textContent = emoji;
                 valueFragment.appendChild(span);
             }
@@ -17209,7 +17216,7 @@ z-index: 1000;\
 opacity: 1;\
 }\
 .ace_composition_placeholder { color: transparent }\
-.ace_composition_marker {\
+.ace_composition_marker { \
 border-bottom: 1px solid;\
 position: absolute;\
 border-radius: 0;\
@@ -17265,7 +17272,7 @@ right: 0;\
 contain: strict;\
 will-change: transform;\
 }\
-.ace_hidpi .ace_text-layer > .ace_line,\
+.ace_hidpi .ace_text-layer > .ace_line, \
 .ace_hidpi .ace_text-layer > .ace_line_group {\
 contain: strict;\
 }\
@@ -17417,7 +17424,7 @@ border: 1px solid transparent;\
 cursor: pointer;\
 }\
 .ace_folding-enabled .ace_fold-widget {\
-display: inline-block;\
+display: inline-block;   \
 }\
 .ace_fold-widget.ace_end {\
 background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==\");\
@@ -17537,8 +17544,7 @@ transform-origin: left;\
 white-space: pre;\
 opacity: 0.7;\
 margin: 0 10px;\
-}\
-";
+}";
 
 var useragent = require("./lib/useragent");
 var HIDE_TEXTAREA = useragent.isIE;
