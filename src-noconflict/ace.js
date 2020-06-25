@@ -16105,7 +16105,7 @@ var Text = function(parentEl) {
     this.$renderToken = function(parent, screenColumn, token, value) {
         var self = this;
 
-        var re = /(\t)|( +)|([\x00-\x1f\x80-\xa0\xad\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\uFEFF\uFFF9-\uFFFC]+)|(\u3000)|([\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3001-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]|[\uD800-\uDBFF][\uDC00-\uDFFF])|(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
+        var re = /(\t)|( +)|([\x00-\x1f\x80-\xa0\xad\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\uFEFF\uFFF9-\uFFFC]+)|(\u3000)|([\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3001-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]|[\uD800-\uDBFF][\uDC00-\uDFFF])|(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])|(\uFE0F)/g;
 
         var valueFragment = this.dom.createFragment(this.element);
 
@@ -16118,6 +16118,7 @@ var Text = function(parentEl) {
             var cjkSpace = m[4];
             var cjk = m[5];
             var emoji = m[6];
+            var variationSelector = m[7];
 
             if (!self.showSpaces && simpleSpace)
                 continue;
@@ -16159,7 +16160,10 @@ var Text = function(parentEl) {
             } else if (cjk) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
-                span.style.width = (self.config.characterWidth * 2) + "px";
+                var nextChar = value[m.index + 2];
+                var multiplier = nextChar === "\uFE0F" ? 2 : 2
+
+                span.style.width = (self.config.characterWidth * multiplier) + "px";
                 span.className = "ace_cjk";
                 span.textContent = cjk;
                 valueFragment.appendChild(span);
@@ -16167,19 +16171,28 @@ var Text = function(parentEl) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
                 var previousChar = value[m.index - 1];
+                var nextChar = value[m.index + 1];
 
                 if (previousChar === "\u200D") {
-                    span.style.width = (self.config.characterWidth * 2) + "px";
-                    span.className = "ace_cjk";
+                  var multiplier = nextChar === "\uFE0F" ? 1 : 2
+                  span.style.width = (self.config.characterWidth * multiplier) + "px";
+                  span.className = "ace_cjk";
                 } else {
                     span.style.width = (self.config.characterWidth) + "px";
                     span.className = "ace_emoji";
                 }
                 span.textContent = emoji;
                 valueFragment.appendChild(span);
+            } else if (variationSelector) {
+              screenColumn += 1;
+              var span = this.dom.createElement("span");
+              span.style.width = (self.config.characterWidth * 1) + "px";
+              span.className = "ace_emoji variationSelctor";
+              span.textContent = variationSelector;
+              valueFragment.appendChild(span);
             }
         }
-        
+
         valueFragment.appendChild(this.dom.createTextNode(i ? value.slice(i) : value, this.element));
 
         if (!this.$textToken[token.type]) {
@@ -17284,7 +17297,6 @@ text-align: center;\
 display: inline-block;\
 text-align: center;\
 font-size: 50%;\
-transform: translate(-12.5%, -12.5%);\
 }\
 .ace_cursor-layer {\
 z-index: 4;\
