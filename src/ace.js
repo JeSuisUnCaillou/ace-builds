@@ -16160,10 +16160,8 @@ var Text = function(parentEl) {
             } else if (cjk) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
-                var nextChar = value[m.index + 2];
-                var multiplier = nextChar === "\uFE0F" ? 2 : 2
 
-                span.style.width = (self.config.characterWidth * multiplier) + "px";
+                span.style.width = (self.config.characterWidth * 2) + "px";
                 span.className = "ace_cjk";
                 span.textContent = cjk;
                 valueFragment.appendChild(span);
@@ -16171,11 +16169,9 @@ var Text = function(parentEl) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
                 var previousChar = value[m.index - 1];
-                var nextChar = value[m.index + 1];
 
                 if (previousChar === "\u200D") {
-                  var multiplier = nextChar === "\uFE0F" ? 1 : 2
-                  span.style.width = (self.config.characterWidth * multiplier) + "px";
+                  span.style.width = (self.config.characterWidth) + "px";
                   span.className = "ace_cjk";
                 } else {
                     span.style.width = (self.config.characterWidth) + "px";

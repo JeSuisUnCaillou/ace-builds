@@ -15803,7 +15803,7 @@ var Lines = require("./lines").Lines;
 var EventEmitter = require("../lib/event_emitter").EventEmitter;
 
 var Text = function(parentEl) {
-    this.dom = dom; 
+    this.dom = dom;
     this.element = this.dom.createElement("div");
     this.element.className = "ace_layer ace_text-layer";
     parentEl.appendChild(this.element);
@@ -15846,7 +15846,7 @@ var Text = function(parentEl) {
     this.getCharacterWidth = function() {
         return this.$fontMetrics.$characterSize.width || 0;
     };
-    
+
     this.$setFontMetrics = function(measure) {
         this.$fontMetrics = measure;
         this.$fontMetrics.on("changeCharacterSize", function(e) {
@@ -15922,7 +15922,7 @@ var Text = function(parentEl) {
                 : lang.stringRepeat(" ", this.tabSize);
 
             var tabClass = this.showTabs ? " ace_invisible ace_invisible_tab" : "";
-            var tabContent = this.showTabs 
+            var tabContent = this.showTabs
                 ? lang.stringRepeat(this.TAB_CHAR, this.tabSize)
                 : spaceContent;
 
@@ -15930,7 +15930,7 @@ var Text = function(parentEl) {
             span.className = className + spaceClass;
             span.textContent = spaceContent;
             this.$tabStrings[" "] = span;
-            
+
             var span = this.dom.createElement("span");
             span.className = className + tabClass;
             span.textContent = tabContent;
@@ -15943,7 +15943,7 @@ var Text = function(parentEl) {
             this.config.firstRow != config.firstRow) {
             return this.update(config);
         }
-        
+
         this.config = config;
 
         var first = Math.max(firstRow, config.firstRow);
@@ -16011,9 +16011,9 @@ var Text = function(parentEl) {
 
         if (this.$lines.pageChanged(oldConfig, config))
             return this.update(config);
-            
+
         this.$lines.moveContainer(config);
-        
+
         var lastRow = config.lastRow;
         var oldLastRow = oldConfig ? oldConfig.lastRow : -1;
 
@@ -16062,7 +16062,7 @@ var Text = function(parentEl) {
                 break;
 
             var line = this.$lines.createCell(row, config, this.session);
-            
+
             var lineEl = line.element;
             this.dom.removeChildren(lineEl);
             dom.setStyle(lineEl.style, "height", this.$lines.computeLineHeight(row, config, this.session) + "px");
@@ -16083,7 +16083,7 @@ var Text = function(parentEl) {
 
     this.update = function(config) {
         this.$lines.moveContainer(config);
-        
+
         this.config = config;
 
         var firstRow = config.firstRow;
@@ -16092,7 +16092,7 @@ var Text = function(parentEl) {
         var lines = this.$lines;
         while (lines.getLength())
             lines.pop();
-            
+
         lines.push(this.$renderLinesFragment(config, firstRow, lastRow));
     };
 
@@ -16126,11 +16126,11 @@ var Text = function(parentEl) {
             var before = i != m.index ? value.slice(i, m.index) : "";
 
             i = m.index + m[0].length;
-            
+
             if (before) {
                 valueFragment.appendChild(this.dom.createTextNode(before, this.element));
             }
-                
+
             if (tab) {
                 var tabSize = self.session.getScreenTabSize(screenColumn + m.index);
                 valueFragment.appendChild(self.$tabStrings[tabSize].cloneNode(true));
@@ -16151,7 +16151,7 @@ var Text = function(parentEl) {
                 valueFragment.appendChild(span);
             } else if (cjkSpace) {
                 screenColumn += 1;
-                
+
                 var span = this.dom.createElement("span");
                 span.style.width = (self.config.characterWidth * 2) + "px";
                 span.className = self.showSpaces ? "ace_cjk ace_invisible ace_invisible_space" : "ace_cjk";
@@ -16160,10 +16160,8 @@ var Text = function(parentEl) {
             } else if (cjk) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
-                var nextChar = value[m.index + 2];
-                var multiplier = nextChar === "\uFE0F" ? 2 : 2
 
-                span.style.width = (self.config.characterWidth * multiplier) + "px";
+                span.style.width = (self.config.characterWidth * 2) + "px";
                 span.className = "ace_cjk";
                 span.textContent = cjk;
                 valueFragment.appendChild(span);
@@ -16171,11 +16169,9 @@ var Text = function(parentEl) {
                 screenColumn += 1;
                 var span = this.dom.createElement("span");
                 var previousChar = value[m.index - 1];
-                var nextChar = value[m.index + 1];
 
                 if (previousChar === "\u200D") {
-                  var multiplier = nextChar === "\uFE0F" ? 1 : 2
-                  span.style.width = (self.config.characterWidth * multiplier) + "px";
+                  span.style.width = (self.config.characterWidth) + "px";
                   span.className = "ace_cjk";
                 } else {
                     span.style.width = (self.config.characterWidth) + "px";
@@ -16200,16 +16196,16 @@ var Text = function(parentEl) {
             var span = this.dom.createElement("span");
             if (token.type == "fold")
                 span.style.width = (token.value.length * this.config.characterWidth) + "px";
-                
+
             span.className = classes;
             span.appendChild(valueFragment);
-            
+
             parent.appendChild(span);
         }
         else {
             parent.appendChild(valueFragment);
         }
-        
+
         return screenColumn + value.length;
     };
 
@@ -16237,7 +16233,7 @@ var Text = function(parentEl) {
         var lineEl = this.dom.createElement("div");
         lineEl.className = "ace_line";
         lineEl.style.height = this.config.lineHeight + "px";
-        
+
         return lineEl;
     };
 
@@ -16249,7 +16245,7 @@ var Text = function(parentEl) {
 
         var lineEl = this.$createLineElement();
         parent.appendChild(lineEl);
-        
+
         for (var i = 0; i < tokens.length; i++) {
             var token = tokens[i];
             var value = token.value;
@@ -16290,7 +16286,7 @@ var Text = function(parentEl) {
                 }
             }
         }
-        
+
         if (splits[splits.length - 1] > this.MAX_LINE_LENGTH)
             this.$renderOverflowMessage(lineEl, screenColumn, null, "", true);
     };
@@ -16311,16 +16307,16 @@ var Text = function(parentEl) {
             screenColumn = this.$renderToken(parent, screenColumn, token, value);
         }
     };
-    
+
     this.$renderOverflowMessage = function(parent, screenColumn, token, value, hide) {
         token && this.$renderToken(parent, screenColumn, token,
             value.slice(0, this.MAX_LINE_LENGTH - screenColumn));
-            
+
         var overflowEl = this.dom.createElement("span");
         overflowEl.className = "ace_inline_button ace_keyword ace_toggle_wrap";
         overflowEl.textContent = hide ? "<hide>" : "<click to see more...>";
-        
-        parent.appendChild(overflowEl);        
+
+        parent.appendChild(overflowEl);
     };
     this.$renderLine = function(parent, row, foldLine) {
         if (!foldLine && foldLine != false)
@@ -16357,7 +16353,7 @@ var Text = function(parentEl) {
             var invisibleEl = this.dom.createElement("span");
             invisibleEl.className = "ace_invisible ace_invisible_eol";
             invisibleEl.textContent = row == this.session.getLength() - 1 ? this.EOF_CHAR : this.EOL_CHAR;
-            
+
             lastLineEl.appendChild(invisibleEl);
         }
     };
